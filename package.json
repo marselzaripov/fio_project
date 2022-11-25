@@ -1,0 +1,27 @@
+{
+  "name": "fio-project",
+  "private": true,
+  "version": "0.0.0",
+
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@web3modal/ethereum": "^2.0.0-beta.5",
+    "@web3modal/react": "^2.0.0-beta.5",
+    "ethers": "^5.7.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "wagmi": "^0.8.5"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "hardhat": "^2.12.2",
+    "vite": "^3.2.3"
+  }
+}
