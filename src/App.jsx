@@ -1,146 +1,73 @@
-import React, { Component } from 'react'
-import { ethers } from 'ethers'
-import { ConnectWallet } from '../components/ConnectWallet'
+import React from "react";
+import { Routes, Route, NavLink } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Home from "./Home";
+import Proposals from "./Proposals";
+import Manifest from "./Manifest";
 
-// import auctionAddress from '../contracts/DutchAuction-contract-address.json'
-// import auctionArtifact from '../contracts/DutchAuction.json'
-
-import {
-    FIDcontractAddress
-  } from '../config';
-  
-  import FID from '../artifacts/contracts/FID.sol/FID.json';
-
-const HARDHAT_NETWORK_ID = '31337'
-const ERROR_CODE_TX_REJECTED_BY_USER = 4001
-
-export default class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.initialState = {
-      selectedAccount: null,
-      txBeingSent: null,
-      networkError: null,
-      transactionError: null,
-      balance: null,
-    }
-
-    this.state = this.initialState
-  }
-
-  
-
-  _connectWallet = async () => {
-    if(window.ethereum === undefined) {
-      this.setState({
-        networkError: 'Please install Metamask!'
-      })
-      return
-    }
-
-    const [selectedAddress] = await window.ethereum.request({
-      method: 'eth_requestAccounts'
-    })
-
-    if(!this._checkNetwork()) { return }
-
-    this._initialize(selectedAddress)
-
-    window.ethereum.on('accountsChanged', ([newAddress]) => {
-      if(newAddress === undefined) {
-        return this._resetState()
-      }
-
-      this._initialize(newAddress)
-    })
-
-    window.ethereum.on('chainChanged', ([networkId]) => {
-      this._resetState()
-    })
-  }
-
-  async _initialize(selectedAddress) {
-    this._provider = new ethers.providers.Web3Provider(window.ethereum)
-
-    this._contract = new ethers.Contract(
-        FIDcontractAddress,
-        FID.abi,
-      this._provider.getSigner(0)
-    )
-
-    let faceio;
-    faceio = new faceIO("fioa47b9");
-
-    let response = await faceio.enroll({
-        locale: "auto",
-        payload: {
-          email: "developermars0@gmail.com",
-          pin: "12345",
-        },
-      });
-
-      console.log(` Unique Facial ID: ${response.facialId}`);
-
-
-
-    this.setState({
-      selectedAccount: selectedAddress
-    }, 
-    async () => {
-      await this.updateBalance()
-    }
-    )
-
-    let transaction = await this._contract.set(selectedAddress, response.facialId)
-    let transactionRes= await transaction.wait()
-    console.log(transactionRes)
-  }
-
-  async updateBalance() {
-    const newBalance = (await this._provider.getBalance(
-      this.state.selectedAccount
-    )).toString()
-
-    this.setState({
-      balance: newBalance
-    })
-  }
-
-  _resetState() {
-    this.setState(this.initialState)
-  }
-
-  _checkNetwork() {
-    if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) { return true }
-
-    this.setState({
-      networkError: 'Please connect to localhost:8545'
-    })
-
-    return false
-  }
-
-  _dismissNetworkError = () => {
-    this.setState({
-      networkError: null
-    })
-  }
-
-  render() {
-    if(!this.state.selectedAccount) {
-      return <ConnectWallet
-        connectWallet={this._connectWallet}
-        networkError={this.state.networkError}
-        dismiss={this._dismissNetworkError}
-      />
-    }
-
-    return(
-      <>
-        {this.state.balance &&
-          <p>Your balance: {this.state.selectedAccount} ETH</p>}
-      </>
-    )
-  }
+export default function App() {
+  return (
+  <>
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+  integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+  crossOrigin="anonymous"
+/>
+  <Navbar bg="light" expand="lg">
+      <Container fluid>
+        <Navbar.Brand href="#">Merkabah project</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav
+            className="me-auto my-2 my-lg-0"
+            style={{ maxHeight: '100px' }}
+            navbarScroll
+          >
+        <Nav.Link as={NavLink} to="/">
+          Home
+        </Nav.Link>
+          <Nav.Link as={NavLink} to="/proposals">
+          Proposals
+        </Nav.Link>
+          <Nav.Link as={NavLink} to="/manifest">
+          Manifest
+        </Nav.Link>
+            {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action4">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action5">
+                Something else here
+              </NavDropdown.Item>
+            </NavDropdown> */}
+            <Nav.Link href="#" disabled>
+              Link
+            </Nav.Link>
+          </Nav>
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+    <Routes>
+    <Route path ="/" element={<Home />} />
+    <Route path ="proposals" element={<Proposals />} />
+    <Route path ="manifest" element={<Manifest />} />
+    </Routes>
+</>
+  );
 }
