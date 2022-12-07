@@ -11,12 +11,15 @@ contract FID {
 
     struct Proposal {
         bool executed;
+        string description;
     }
 
     enum ProposalState { Pending, Succeeded }
 
-    mapping(bytes32 => Proposal) public proposals;
+    mapping(uint => Proposal) public proposals;
     mapping(bytes32 => ProposalVote) public proposalVotes;
+    event ProposalAdded(uint proposalId);
+    uint totalProposalEntries = 0;
 
     mapping(address => bytes32) public AddressToFaceid; //check FaceId is unical
     uint totalEntries = 0;
@@ -27,7 +30,7 @@ contract FID {
         // If the value was never set, it will return the default value.
         return AddressToFaceid[_addr];
     }
-
+    
     function setAddressToFaceid(address _addr, bytes32 _i) public {
         // Update the value at this address
         require(faceIdAlreadyExist[_i]==false);
@@ -37,25 +40,35 @@ contract FID {
         
     }
 
-    event ProposalAdded(bytes32 proposalId);
+    function getAllProposals() public view returns (Proposal[] memory){
+        Proposal[] memory ret = new Proposal[](totalProposalEntries);
+            for (uint i = 0; i < totalProposalEntries; i++) {
+                ret[i] = proposals[i];
+            }
+        return ret;
+    }
 
     function propose(
         string calldata _description
-    ) external returns(bytes32) {
+    ) external returns(uint) {
         
         bytes32 faceIdAddress = AddressToFaceid[msg.sender];
         bytes32 empty = "";
         require(faceIdAddress != empty);
+        uint proposalId = totalProposalEntries;
 
-        bytes32 proposalId = generateProposalId(
-            keccak256(bytes(_description))
-        );
+        // bytes32 proposalId = generateProposalId(
+        //     keccak256(bytes(_description))
+        // );
 
         //require(proposals[proposalId].votingStarts == 0, "proposal already exists");
 
         proposals[proposalId] = Proposal({
-            executed: false
+            executed: false,
+            description: _description
         });
+
+        ++totalProposalEntries;
 
         emit ProposalAdded(proposalId);
 
