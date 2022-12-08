@@ -10,7 +10,7 @@ contract FID {
     }
 
     struct Proposal {
-        bool executed;
+        bool succeeded;
         string description;
     }
 
@@ -37,7 +37,6 @@ contract FID {
         faceIdAlreadyExist[_i] = true;
         AddressToFaceid[_addr] = _i;
         ++totalEntries;
-        
     }
 
     function getAllProposals() public view returns (Proposal[] memory){
@@ -49,12 +48,13 @@ contract FID {
     }
 
     function propose(
-        string calldata _description
+        string memory _description
     ) external returns(uint) {
-        
-        bytes32 faceIdAddress = AddressToFaceid[msg.sender];
-        bytes32 empty = "";
-        require(faceIdAddress != empty);
+        // TODO: need require
+        // bytes32 faceIdAddress = AddressToFaceid[msg.sender];
+        // bytes32 empty = "";
+        // require(faceIdAddress != empty);
+         ++totalProposalEntries;
         uint proposalId = totalProposalEntries;
 
         // bytes32 proposalId = generateProposalId(
@@ -64,11 +64,9 @@ contract FID {
         //require(proposals[proposalId].votingStarts == 0, "proposal already exists");
 
         proposals[proposalId] = Proposal({
-            executed: false,
+            succeeded: false,
             description: _description
         });
-
-        ++totalProposalEntries;
 
         emit ProposalAdded(proposalId);
 
@@ -111,13 +109,13 @@ contract FID {
     }
 
 
-    function generateProposalId(
-        bytes32 _descriptionHash
-    ) internal pure returns(bytes32) {
-        return keccak256(abi.encode(
-            _descriptionHash
-        ));
-    }
+    // function generateProposalId(
+    //     bytes32 _descriptionHash
+    // ) internal pure returns(bytes32) {
+    //     return keccak256(abi.encode(
+    //         _descriptionHash
+    //     ));
+    // }
 
     receive() external payable {}
 }
