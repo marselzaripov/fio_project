@@ -34,7 +34,6 @@ export default function Manifest() {
     console.log(data)
     const items = await Promise.all(data.map(async i => {
       let item = {
-        succeeded: i.succeeded,
         description: i.description
       }
       return item

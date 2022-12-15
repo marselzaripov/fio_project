@@ -13,12 +13,15 @@ export default function Proposals() {
   const [formInput, updateFormInput] = useState({ description: '' })
 
   async function listProposal() {
+    
+    // const provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545")
+    // const ethPrivkey = "49ee088b9bcda1b6b8f8cde688193e67bbbc41602deeef0454bd838b3f414cb7"
+    // const wallet = new ethers.Wallet(ethPrivkey, provider)
+    // const signer = provider.getSigner(wallet.address)
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
 
-    /* next, create the item */
-    
     let contract = new ethers.Contract(
         FIDcontractAddress,
         FID.abi, 

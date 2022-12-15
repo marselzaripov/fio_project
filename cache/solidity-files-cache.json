@@ -70,6 +70,76 @@
       "artifacts": [
         "FID2"
       ]
+    },
+    "/Users/mars/Desktop/fio_project/contracts/FID.sol": {
+      "lastModificationDate": 1671092558477,
+      "contentHash": "b5e5a5913aaab244d209af5efd3e05f5",
+      "sourceName": "contracts/FID.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "FID"
+      ]
+    },
+    "/Users/mars/Desktop/fio_project/contracts/FID2.sol": {
+      "lastModificationDate": 1671092558477,
+      "contentHash": "8ac7a6f9eb223861f2b5682aa056cdc6",
+      "sourceName": "contracts/FID2.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "FID2"
+      ]
     }
   }
 }
