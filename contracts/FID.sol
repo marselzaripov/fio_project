@@ -17,7 +17,7 @@ contract FID {
     enum ProposalState { Pending, Succeeded }
 
     mapping(uint => Proposal) public proposals;
-    mapping(bytes32 => ProposalVote) public proposalVotes;
+    mapping(uint => ProposalVote) public proposalVotes;
     event ProposalAdded(uint proposalId);
     uint totalProposalEntries = 0;
 
@@ -74,7 +74,7 @@ contract FID {
     }
 
 
-    function vote(bytes32 proposalId, uint8 voteType) external {
+    function vote(uint proposalId, uint8 voteType) external {
         //require(state(proposalId) == ProposalState.Active, "invalid state");
 
         bytes32 faceIdAddress = AddressToFaceid[msg.sender];
@@ -94,28 +94,21 @@ contract FID {
         proposalVote.hasVoted[msg.sender] = true;
     }
 
-    function state(bytes32 proposalId) public view returns (ProposalState) {
-        //Proposal storage proposal = proposals[proposalId];
-        ProposalVote storage proposalVote = proposalVotes[proposalId];
+    // function state(uint proposalId) public view returns (ProposalState) {
+    //     //Proposal storage proposal = proposals[proposalId];
+    //     ProposalVote storage proposalVote = proposalVotes[proposalId];
 
-        uint resultVotes = proposalVote.forVotes - proposalVote.againstVotes; // int?
-        uint quorumVotes = totalEntries * 51 / 100; // 51 diapason 51 - 100
+    //     uint resultVotes = proposalVote.forVotes - proposalVote.againstVotes; // int?
+    //     uint quorumVotes = totalEntries * 51 / 100; // 51 diapason 51 - 100
 
-        if(resultVotes > quorumVotes) {//proposalVote.forVotes - proposalVote.againstVotes > totalEntries * 51 / 100
-            return ProposalState.Succeeded;
-        } else {
-            return ProposalState.Pending;
-        }
-    }
-
-
-    // function generateProposalId(
-    //     bytes32 _descriptionHash
-    // ) internal pure returns(bytes32) {
-    //     return keccak256(abi.encode(
-    //         _descriptionHash
-    //     ));
+    //     if(resultVotes > quorumVotes) {//proposalVote.forVotes - proposalVote.againstVotes > totalEntries * 51 / 100
+    //         return ProposalState.Succeeded;
+    //     } else {
+    //         return ProposalState.Pending;
+    //     }
     // }
+
+
 
     receive() external payable {}
 }

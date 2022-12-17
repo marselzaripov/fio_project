@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ethers } from 'ethers'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 import {
     FIDcontractAddress
@@ -34,23 +36,23 @@ export default function Proposals() {
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="w-1/2 flex flex-col pb-12">
-        {/* <input 
-          placeholder="Asset Name"
-          className="mt-8 border rounded p-4"
-          onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
-        /> */}
-        <textarea
-          placeholder="Proposal Description"
-          className="mt-2"
-          onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
-        />
+    
+<div className="flex justify-center">
+<div className="w-1/2 flex flex-col pb-12">
 
-        <button onClick={listProposal}>
-          Create proposal
-        </button>
-      </div>
-    </div>
+         
+           
+            <textarea
+            placeholder="Proposal Description"
+            className="mt-2"
+            onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
+          />
+
+      
+          <button onClick={listProposal} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">Create proposal</button>
+        </div>
+
+</div>
+
   )
 }

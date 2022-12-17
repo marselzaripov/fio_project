@@ -72,8 +72,8 @@
       ]
     },
     "/Users/mars/Desktop/fio_project/contracts/FID.sol": {
-      "lastModificationDate": 1671092558477,
-      "contentHash": "b5e5a5913aaab244d209af5efd3e05f5",
+      "lastModificationDate": 1671268438437,
+      "contentHash": "ce44b8c2caae76251835c52aa3011e66",
       "sourceName": "contracts/FID.sol",
       "solcConfig": {
         "version": "0.8.9",

@@ -13,18 +13,16 @@ export default function Manifest() {
   //const [formInput, updateFormInput] = useState({ description: '' })
 
   const [proposals, setProposals] = useState([])
-//   const [loadingState, setLoadingState] = useState('not-loaded')
+  const [loadingState, setLoadingState] = useState('not-loaded')
   useEffect(() => {
     listProposal()
   }, [])
 
   async function listProposal() {
 
+      //TODO: jsonRpcProvider
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-
-    /* next, create the item */
-    
     const fidContract = new ethers.Contract(
         FIDcontractAddress,
         FID.abi, 
@@ -39,10 +37,38 @@ export default function Manifest() {
       return item
     }))
     setProposals(items)
-    //setLoadingState('loaded') 
+    setLoadingState('loaded') 
    
   }
 
+  async function voteFor(proposalId) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const fidContract = new ethers.Contract(
+        FIDcontractAddress,
+        FID.abi, 
+        signer)
+    const transaction = await fidContract.vote(proposalId, 1, {
+      gasLimit: 100000
+    })
+    await transaction.wait()
+  }
+
+  async function voteAgainst(proposalId) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const fidContract = new ethers.Contract(
+        FIDcontractAddress,
+        FID.abi, 
+        signer)
+    const transaction = await fidContract.vote(proposalId, 0, {
+      gasLimit: 100000
+    })
+    await transaction.wait()
+  }
+
+  
+  if (loadingState === 'loaded' && !proposals.length) return (<h1 className="px-20 py-10 text-3xl">No items</h1>)
   return (
     <div className="flex justify-center">
       <div className="w-1/2 flex flex-col pb-12">
@@ -50,9 +76,10 @@ export default function Manifest() {
             proposals.map((proposal, i) => (
               <div key={i} className="border shadow rounded-xl overflow-hidden">
             
-                <div className="p-4 bg-black">
-                  <p className="text-2xl font-bold text-white">{proposal.description}</p>
-                  <button className="mt-4 w-full bg-pink-500 text-white font-bold py-2 px-12 rounded">List</button>
+                <div className="p-4">
+                  <p className="text-2xl font-bold">{proposal.description}</p>
+                  <button onClick={() => voteFor(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
+                  <button onClick={() => voteAgainst(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
                 </div>
               </div>
             ))

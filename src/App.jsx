@@ -18,6 +18,7 @@ export default function App() {
   integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
   crossOrigin="anonymous"
 />
+
   <Navbar bg="light" expand="lg">
       <Container fluid>
         <Navbar.Brand href="#">Merkabah project</Navbar.Brand>
@@ -63,11 +64,13 @@ export default function App() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+    <Container fluid>
     <Routes>
     <Route path ="/" element={<Home />} />
     <Route path ="proposals" element={<Proposals />} />
     <Route path ="manifest" element={<Manifest />} />
     </Routes>
+   </Container>
 </>
   );
 }
