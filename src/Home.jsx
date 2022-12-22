@@ -11,7 +11,7 @@ import {
   
   import FID from '../artifacts/contracts/FID.sol/FID.json';
 
-const HARDHAT_NETWORK_ID = '1337'
+const HARDHAT_NETWORK_ID = '97'
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001
 
 export default class Home extends Component {
