@@ -43,6 +43,7 @@ export default class Home extends Component {
       method: 'eth_requestAccounts'
     })
 
+    
     if(!this._checkNetwork()) { return }
 
     this._initialize(selectedAddress)
@@ -58,6 +59,8 @@ export default class Home extends Component {
     window.ethereum.on('chainChanged', ([networkId]) => {
       this._resetState()
     })
+
+    window.sessionStorage.setItem('wallet', selectedAddress)
   }
 
   async _initialize(selectedAddress) {
@@ -69,18 +72,18 @@ export default class Home extends Component {
       this._provider.getSigner(0)
     )
 
-    let faceio;
-    faceio = new faceIO("fioa47b9");
+    // let faceio;
+    // faceio = new faceIO("fioa47b9");
 
-    let response = await faceio.enroll({
-        locale: "auto",
-        payload: {
-          email: "developermars0@gmail.com",
-          pin: "12345",
-        },
-      });
+    // let response = await faceio.enroll({
+    //     locale: "auto",
+    //     payload: {
+    //       email: "developermars0@gmail.com",
+    //       pin: "12345",
+    //     },
+    //   });
 
-      console.log(` Unique Facial ID: ${response.facialId}`);
+    //   console.log(` Unique Facial ID: ${response.facialId}`);
 
 
 
@@ -91,10 +94,10 @@ export default class Home extends Component {
       await this.updateBalance()
     }
     )
-    let faceIdBytes = bytes32(response.facialId)
-    let transaction = await this._contract.setAddressToFaceid(selectedAddress, faceIdBytes)
-    let transactionRes= await transaction.wait()
-    console.log(transactionRes)
+    // let faceIdBytes = bytes32(response.facialId)
+    // let transaction = await this._contract.setAddressToFaceid(selectedAddress, faceIdBytes)
+    // let transactionRes= await transaction.wait()
+    // console.log(transactionRes)
   }
 
   async updateBalance() {

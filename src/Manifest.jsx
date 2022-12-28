@@ -32,7 +32,8 @@ export default function Manifest() {
     console.log(data)
     const items = await Promise.all(data.map(async i => {
       let item = {
-        description: i.description
+        description: i.description,
+        forVotes: i.forVotes.toNumber()
       }
       return item
     }))
@@ -67,6 +68,7 @@ export default function Manifest() {
     await transaction.wait()
   }
 
+  //const wallet = window.sessionStorage.getItem('wallet')
   
   if (loadingState === 'loaded' && !proposals.length) return (<h1 className="px-20 py-10 text-3xl">No items</h1>)
   return (
@@ -77,14 +79,16 @@ export default function Manifest() {
               <div key={i} className="border shadow rounded-xl overflow-hidden">
             
                 <div className="p-4">
-                  <p className="text-2xl font-bold">{proposal.description}</p>
+                  <p className="text-2xl font-bold">{proposal.description}--{proposal.forVotes}--</p>
                   <button onClick={() => voteFor(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
                   <button onClick={() => voteAgainst(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
+                  
                 </div>
               </div>
             ))
           }
       </div>
+      {/* <h2>{wallet}</h2> */}
     </div>
   )
 }

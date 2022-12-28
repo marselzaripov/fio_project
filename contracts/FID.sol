@@ -3,21 +3,22 @@
 pragma solidity ^0.8.0;
 
 contract FID {
-    struct ProposalVote {
-        uint againstVotes;
-        uint forVotes;
-        mapping(address => bool) hasVoted;
-    }
+    // struct ProposalVote {
+    //     mapping(address => bool) hasVoted;
+    // }
 
     struct Proposal {
         bool succeeded;
         string description;
+        uint againstVotes;
+        uint forVotes;
     }
 
     enum ProposalState { Pending, Succeeded }
 
+    mapping(address => bool) hasVoted;
     mapping(uint => Proposal) public proposals;
-    mapping(uint => ProposalVote) public proposalVotes;
+    // mapping(uint => ProposalVote) public proposalVotes;
     event ProposalAdded(uint proposalId);
     uint totalProposalEntries = 0;
 
@@ -30,6 +31,7 @@ contract FID {
         // If the value was never set, it will return the default value.
         return AddressToFaceid[_addr];
     }
+
     
     function setAddressToFaceid(address _addr, bytes32 _i) public {
         // Update the value at this address
@@ -65,7 +67,9 @@ contract FID {
 
         proposals[proposalId] = Proposal({
             succeeded: false,
-            description: _description
+            description: _description,
+            againstVotes: 0,
+            forVotes: 0
         });
 
         emit ProposalAdded(proposalId);
@@ -77,13 +81,13 @@ contract FID {
     function vote(uint proposalId, uint8 voteType) external {
         //require(state(proposalId) == ProposalState.Active, "invalid state");
 
-        bytes32 faceIdAddress = AddressToFaceid[msg.sender];
-        bytes32 empty = "";
-        require(faceIdAddress != empty);
+        // bytes32 faceIdAddress = AddressToFaceid[msg.sender];
+        // bytes32 empty = "";
+        // require(faceIdAddress != empty);
 
-        ProposalVote storage proposalVote = proposalVotes[proposalId];
+        Proposal storage proposalVote = proposals[proposalId];
 
-        require(!proposalVote.hasVoted[msg.sender], "already voted");
+        // require(!hasVoted[msg.sender], "already voted");
 
         if(voteType == 0) {
             proposalVote.againstVotes++;
@@ -91,7 +95,7 @@ contract FID {
             proposalVote.forVotes++;
         }
 
-        proposalVote.hasVoted[msg.sender] = true;
+        hasVoted[msg.sender] = true;
     }
 
     // function state(uint proposalId) public view returns (ProposalState) {
