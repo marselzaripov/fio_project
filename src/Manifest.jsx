@@ -28,7 +28,7 @@ export default function Manifest() {
         FID.abi, 
         signer)
 
-    const data = await fidContract.getAllProposals()
+    const data = await fidContract.fetchProposals()
     console.log(data)
     const items = await Promise.all(data.map(async i => {
       let item = {

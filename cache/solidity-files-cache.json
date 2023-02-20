@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/mars/Desktop/projects/fio/fio_project/contracts/FID.sol": {
-      "lastModificationDate": 1676879551244,
-      "contentHash": "6f628bcd7ca18760a61e2d7386429278",
+      "lastModificationDate": 1676902676700,
+      "contentHash": "bad0ee0958fe95e548d5695fa3d5f059",
       "sourceName": "contracts/FID.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -28,7 +28,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "@openzeppelin/contracts/utils/Counters.sol"
+      ],
       "versionPragmas": [
         "^0.8.0"
       ],
@@ -104,6 +106,41 @@
       ],
       "artifacts": [
         "FID3"
+      ]
+    },
+    "/Users/mars/Desktop/projects/fio/fio_project/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+      "lastModificationDate": 1676902285192,
+      "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
+      "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Counters"
       ]
     }
   }

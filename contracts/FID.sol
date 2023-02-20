@@ -2,7 +2,12 @@
 
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 contract FID {
+
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
     struct Proposal {
         bool succeeded;
@@ -40,11 +45,37 @@ contract FID {
 
     function getAllProposals() public view returns (Proposal[] memory){
         Proposal[] memory ret = new Proposal[](totalProposalEntries);
-            for (uint i = 1; i < totalProposalEntries; i++) {
+            for (uint i = 0; i < totalProposalEntries; i++) {
                 ret[i] = proposals[i];
             }
         return ret;
+
     }
+
+    function fetchProposals() public view returns (Proposal[] memory) {
+      uint totalItemCount = _tokenIds.current();
+//      uint itemCount = 0;
+      uint currentIndex = 0;
+
+    //   for (uint i = 0; i < totalItemCount; i++) {
+    //     if (proposals[i + 1].owner == msg.sender) {
+    //       itemCount += 1;
+    //     }
+    //  }
+
+      Proposal[] memory items = new Proposal[](totalItemCount);
+      for (uint i = 0; i < totalItemCount; i++) {
+       
+          uint currentId = i + 1;
+          Proposal storage currentItem = proposals[currentId];
+          items[currentIndex] = currentItem;
+          currentIndex += 1;
+        
+      }
+      return items;
+    }
+
+
 
 
     function getProposalById(uint id) public view returns (Proposal memory) {
@@ -72,8 +103,8 @@ contract FID {
     ) external returns(uint) {
         // TODO: need require
         // require(AddressToFaceid[msg.sender] > 0);
-         ++totalProposalEntries;
-        uint proposalId = totalProposalEntries;
+        _tokenIds.increment();
+        uint proposalId = _tokenIds.current();
 
         proposals[proposalId] = Proposal({
             succeeded: false,
