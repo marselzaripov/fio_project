@@ -4,12 +4,15 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+//import Button from "react-bootstrap/Button";
 import Home from "./Home";
 import Proposals from "./Proposals";
 import Manifest from "./Manifest";
 
+
 export default function App() {
+
+
   return (
   <>
   <link
@@ -18,6 +21,8 @@ export default function App() {
   integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
   crossOrigin="anonymous"
 />
+
+    
 
   <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -38,6 +43,7 @@ export default function App() {
           <Nav.Link as={NavLink} to="/manifest">
           Manifest
         </Nav.Link>
+
             {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
@@ -52,14 +58,11 @@ export default function App() {
               Link
             </Nav.Link>
           </Nav>
+          
           <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button>
+          <Home
+      />
+          
           </Form>
         </Navbar.Collapse>
       </Container>
@@ -70,6 +73,7 @@ export default function App() {
     <Route path ="proposals" element={<Proposals />} />
     <Route path ="manifest" element={<Manifest />} />
     </Routes>
+  
    </Container>
 </>
   );

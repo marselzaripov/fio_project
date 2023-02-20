@@ -71,9 +71,9 @@ export default class Home extends Component {
         FID.abi,
       this._provider.getSigner(0)
     )
-
+//faceio api call from backend, save face id only in backend
     // let faceio;
-    // faceio = new faceIO("fioa47b9");
+    // faceio = new faceIO("fioab65a");
 
     // let response = await faceio.enroll({
     //     locale: "auto",
@@ -94,11 +94,13 @@ export default class Home extends Component {
       await this.updateBalance()
     }
     )
+    
     // let faceIdBytes = bytes32(response.facialId)
     // let transaction = await this._contract.setAddressToFaceid(selectedAddress, faceIdBytes)
     // let transactionRes= await transaction.wait()
     // console.log(transactionRes)
   }
+
 
   async updateBalance() {
     const newBalance = (await this._provider.getBalance(
@@ -143,7 +145,7 @@ export default class Home extends Component {
     return(
       <>
         {this.state.balance &&
-          <p>Your balance: {this.state.selectedAccount} ETH</p>}
+          <p>{this.state.selectedAccount}</p>}
       </>
     )
   }

@@ -29,30 +29,28 @@ export default function Proposals() {
         FID.abi, 
         signer)
 
-    let transaction = await contract.propose(formInput.description)
+    let transaction = await contract.propose(formInput.name, formInput.description)
     let transactionRes = await transaction.wait()
     console.log(transactionRes)
    
   }
 
   return (
+
+    <Form>
+    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" onChange={e => updateFormInput({ ...formInput, name: e.target.value })}>
+      <Form.Label>Name</Form.Label>
+      <Form.Control type="name" placeholder="name" />
+    </Form.Group>
+    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" onChange={e => updateFormInput({ ...formInput, description: e.target.value })}>
+      <Form.Label>Description</Form.Label>
+      <Form.Control as="textarea" rows={3}  />
+    </Form.Group>
+    <Button variant="primary" onClick={listProposal}>
+        Submit
+      </Button>
+  </Form>
     
-<div className="flex justify-center">
-<div className="w-1/2 flex flex-col pb-12">
-
-         
-           
-            <textarea
-            placeholder="Proposal Description"
-            className="mt-2"
-            onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
-          />
-
-      
-          <button onClick={listProposal} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">Create proposal</button>
-        </div>
-
-</div>
 
   )
 }

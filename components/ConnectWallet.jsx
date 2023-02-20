@@ -1,4 +1,5 @@
 import { NetworkErrorMessage } from "./NetworkErrorMessage"
+import Button from "react-bootstrap/Button";
 
 export function ConnectWallet({ connectWallet, networkError, dismiss }) {
   return (
@@ -12,10 +13,9 @@ export function ConnectWallet({ connectWallet, networkError, dismiss }) {
         )}
       </div>
 
-      <p>Please connect your account...</p>
-      <button type="button" onClick={connectWallet}>
-        Connect Wallet
-      </button>
+      {/* <p>Please connect your account...</p> */}
+      <Button type="button" variant="outline-success" onClick={connectWallet}>Connect Wallet</Button>
+
     </>
   )
 }

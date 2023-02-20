@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/mars/Desktop/projects/fio/fio_project/contracts/FID.sol": {
-      "lastModificationDate": 1672228245688,
-      "contentHash": "99038266688e5e56c33e6dbc310915ba",
+      "lastModificationDate": 1676879551244,
+      "contentHash": "6f628bcd7ca18760a61e2d7386429278",
       "sourceName": "contracts/FID.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -69,6 +69,41 @@
       ],
       "artifacts": [
         "FID2"
+      ]
+    },
+    "/Users/mars/Desktop/projects/fio/fio_project/contracts/FID3.sol": {
+      "lastModificationDate": 1676878036352,
+      "contentHash": "e390f54619870d64aae53610c3d3a4d4",
+      "sourceName": "contracts/FID3.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "FID3"
       ]
     }
   }

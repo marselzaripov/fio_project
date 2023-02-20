@@ -32,8 +32,11 @@ export default function Manifest() {
     console.log(data)
     const items = await Promise.all(data.map(async i => {
       let item = {
+        name: i.name,
         description: i.description,
-        forVotes: i.forVotes.toNumber()
+        forVotes: i.forVotes.toNumber(),
+        againstVotes: i.againstVotes.toNumber(),
+        succeeded: i.succeeded
       }
       return item
     }))
@@ -49,6 +52,7 @@ export default function Manifest() {
         FIDcontractAddress,
         FID.abi, 
         signer)
+    debugger
     const transaction = await fidContract.vote(proposalId, 1, {
       gasLimit: 100000
     })
@@ -79,7 +83,12 @@ export default function Manifest() {
               <div key={i} className="border shadow rounded-xl overflow-hidden">
             
                 <div className="p-4">
-                  <p className="text-2xl font-bold">{proposal.description}--{proposal.forVotes}--</p>
+                  <p className="text-2xl font-bold">Name-{proposal.name}</p>
+                  <p className="text-2xl font-bold">Desc-{proposal.description}</p>
+                  <p className="text-2xl font-bold">For-{proposal.forVotes}</p>
+                  <p className="text-2xl font-bold">Against-{proposal.againstVotes}</p>
+                  <p className="text-2xl font-bold">succeeded-{proposal.succeeded}</p>
+                  
                   <button onClick={() => voteFor(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
                   <button onClick={() => voteAgainst(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
                   
