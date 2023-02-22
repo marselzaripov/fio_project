@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/mars/Desktop/projects/fio/fio_project/contracts/FID.sol": {
-      "lastModificationDate": 1676902676700,
-      "contentHash": "bad0ee0958fe95e548d5695fa3d5f059",
+      "lastModificationDate": 1677044251169,
+      "contentHash": "2d67096ddc8f9a2be8c611c6831a155c",
       "sourceName": "contracts/FID.sol",
       "solcConfig": {
         "version": "0.8.9",

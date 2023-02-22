@@ -32,6 +32,7 @@ export default function Manifest() {
     console.log(data)
     const items = await Promise.all(data.map(async i => {
       let item = {
+        proposalId: i.proposalId,
         name: i.name,
         description: i.description,
         forVotes: i.forVotes.toNumber(),
@@ -45,28 +46,29 @@ export default function Manifest() {
    
   }
 
-  async function voteFor(proposalId) {
+  async function voteFor(proposal) {
+    
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
     const fidContract = new ethers.Contract(
         FIDcontractAddress,
         FID.abi, 
         signer)
-    debugger
-    const transaction = await fidContract.vote(proposalId, 1, {
+
+    const transaction = await fidContract.vote(proposal.proposalId, 1, {
       gasLimit: 100000
     })
     await transaction.wait()
   }
 
-  async function voteAgainst(proposalId) {
+  async function voteAgainst(proposal) {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
     const fidContract = new ethers.Contract(
         FIDcontractAddress,
         FID.abi, 
         signer)
-    const transaction = await fidContract.vote(proposalId, 0, {
+    const transaction = await fidContract.vote(proposal.proposalId, 0, {
       gasLimit: 100000
     })
     await transaction.wait()
@@ -74,7 +76,7 @@ export default function Manifest() {
 
   //const wallet = window.sessionStorage.getItem('wallet')
   
-  if (loadingState === 'loaded' && !proposals.length) return (<h1 className="px-20 py-10 text-3xl">No items</h1>)
+  if (loadingState === 'loaded' && !proposals.length) return (<h1 className="px-20 py-10 text-3xl">No proposals</h1>)
   return (
     <div className="flex justify-center">
       <div className="w-1/2 flex flex-col pb-12">
@@ -89,8 +91,9 @@ export default function Manifest() {
                   <p className="text-2xl font-bold">Against-{proposal.againstVotes}</p>
                   <p className="text-2xl font-bold">succeeded-{proposal.succeeded}</p>
                   
-                  <button onClick={() => voteFor(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
-                  <button onClick={() => voteAgainst(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
+                  <button onClick={() => voteFor(proposal)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
+                  <button onClick={() => voteAgainst(proposal)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
+                  <button onClick={() => alert(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">alert</button>
                   
                 </div>
               </div>

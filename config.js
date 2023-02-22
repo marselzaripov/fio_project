@@ -1,3 +1,3 @@
 
-  export const FIDcontractAddress = "0xaf03F87cE5af20dae6245b3D02ac1e7AfB21D77d"
+  export const FIDcontractAddress = "0x591ef9aFF08a30967De64862DCC3E9Ef02041f95"
   

@@ -10,6 +10,7 @@ contract FID {
     Counters.Counter private _tokenIds;
 
     struct Proposal {
+        uint proposalId;
         bool succeeded;
         string name;
         string description;
@@ -43,26 +44,9 @@ contract FID {
         ++totalEntries;
     }
 
-    function getAllProposals() public view returns (Proposal[] memory){
-        Proposal[] memory ret = new Proposal[](totalProposalEntries);
-            for (uint i = 0; i < totalProposalEntries; i++) {
-                ret[i] = proposals[i];
-            }
-        return ret;
-
-    }
-
     function fetchProposals() public view returns (Proposal[] memory) {
       uint totalItemCount = _tokenIds.current();
-//      uint itemCount = 0;
       uint currentIndex = 0;
-
-    //   for (uint i = 0; i < totalItemCount; i++) {
-    //     if (proposals[i + 1].owner == msg.sender) {
-    //       itemCount += 1;
-    //     }
-    //  }
-
       Proposal[] memory items = new Proposal[](totalItemCount);
       for (uint i = 0; i < totalItemCount; i++) {
        
@@ -74,9 +58,6 @@ contract FID {
       }
       return items;
     }
-
-
-
 
     function getProposalById(uint id) public view returns (Proposal memory) {
         // Mapping always returns a value.
@@ -107,6 +88,7 @@ contract FID {
         uint proposalId = _tokenIds.current();
 
         proposals[proposalId] = Proposal({
+            proposalId: proposalId,
             succeeded: false,
             name: _name,
             description: _description,
@@ -124,7 +106,7 @@ contract FID {
 
         Proposal storage _proposal = proposals[proposalId];
 
-            if(voteType == 0) {
+        if(voteType == 0) {
             require(!hasVotedAgainstProposal[msg.sender][proposalId], "already voted against propose");
             if(hasVotedForProposal[msg.sender][proposalId] == true){
                 _proposal.forVotes--;
@@ -143,17 +125,21 @@ contract FID {
             hasVotedAgainstProposal[msg.sender][proposalId] = false;
         }
 
-        uint quorumVotes = totalEntries * 66 / 100; // 51 diapason 51 - 100
-        require(_proposal.forVotes > _proposal.againstVotes, "forVotes must be greater than againstVotes");
-        uint totalVotes = _proposal.forVotes - _proposal.againstVotes;
-        if(totalVotes > quorumVotes) {
-            _proposal.succeeded = true;
-            emit ProposalSucceeded(proposalId);
-        } else {
-            _proposal.succeeded = false;
-            emit ProposalPending(proposalId);
-        }
 
+        // if(_proposal.forVotes > _proposal.againstVotes){
+        //     uint quorumVotes = totalEntries * 66 / 100; // 51 diapason 51 - 100
+        //     uint totalVotes = _proposal.forVotes - _proposal.againstVotes;
+        //     if(totalVotes > quorumVotes) {
+        //         _proposal.succeeded = true;
+        //         emit ProposalSucceeded(proposalId);
+        //     } else {
+        //         _proposal.succeeded = false;
+        //         emit ProposalPending(proposalId);
+        //     }
+        // } else {
+        //         _proposal.succeeded = false;
+        //         emit ProposalPending(proposalId);
+        // }
  
     }
 

@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 //import Button from "react-bootstrap/Button";
 import Home from "./Home";
 import Proposals from "./Proposals";
+//import ProposalsList from "./ProposalsList";
 import Manifest from "./Manifest";
 
 
@@ -43,6 +44,9 @@ export default function App() {
           <Nav.Link as={NavLink} to="/manifest">
           Manifest
         </Nav.Link>
+        {/* <Nav.Link as={NavLink} to="/proposals_list">
+          Proposals list
+        </Nav.Link> */}
 
             {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -72,6 +76,7 @@ export default function App() {
     <Route path ="/" element={<Home />} />
     <Route path ="proposals" element={<Proposals />} />
     <Route path ="manifest" element={<Manifest />} />
+    {/* <Route path ="proposals_list" element={<ProposalsList />} /> */}
     </Routes>
   
    </Container>
