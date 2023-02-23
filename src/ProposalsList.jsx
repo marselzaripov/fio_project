@@ -1,73 +1,110 @@
-// import { ethers } from 'ethers'
-// import { useEffect, useState } from 'react'
-// import axios from 'axios'
-// import Web3Modal from 'web3modal'
-// import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
+import { ethers } from 'ethers'
+import Container from "react-bootstrap/Container";
 
-// import {
-//   FIDcontractAddress
-// } from '../config';
+import {
+    FIDcontractAddress
+  } from '../config';
+  
+import FID from '../artifacts/contracts/FID.sol/FID.json';
 
-// import FID from '../artifacts/contracts/FID.sol/FID.json';
 
-// export default function MyAssets() {
-//   const [nfts, setNfts] = useState([])
-//   const [loadingState, setLoadingState] = useState('not-loaded')
-//   const router = useRouter()
-//   useEffect(() => {
-//     loadProposals()
-//   }, [])
-//   async function loadProposals() {
-//     const web3Modal = new Web3Modal({
-//       network: "testnet",
-//       cacheProvider: true,
-//     })
-//     const connection = await web3Modal.connect()
-//     const provider = new ethers.providers.Web3Provider(connection)
-//     const signer = provider.getSigner()
+export default function ProposalsList() {
+  //const [fileUrl, setFileUrl] = useState(null)
+  //const [formInput, updateFormInput] = useState({ description: '' })
 
-//     const FIDContract = new ethers.Contract(FIDcontractAddress, FID.abi, signer)
-//     const data = await FIDContract.fetchProposals()
+  const [proposals, setProposals] = useState([])
+  const [loadingState, setLoadingState] = useState('not-loaded')
+  useEffect(() => {
+    listProposal()
+  }, [])
 
-//     const items = await Promise.all(data.map(async i => {
-//       //const tokenURI = await FIDContract.tokenURI(i.tokenId)
-//       //const meta = await axios.get(tokenURI)
-//       //let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-//       let item = {
+  async function listProposal() {
 
-//         name: i.name,
-//         description: i.description,
-//         forVotes: i.forVotes.toNumber(),
-//         againstVotes: i.againstVotes.toNumber(),
-//         succeeded: i.succeeded.toString()
-//       }
-//       return item
-//     }))
-//     setNfts(items)
-//     setLoadingState('loaded') 
-//   }
-//   function listNFT(nft) {
-//     console.log('nft:', nft)
-//     router.push(`/resell-nft?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)
-//   }
-//   if (loadingState === 'loaded' && !nfts.length) return (<h1 className="py-10 px-20 text-3xl">No NFTs owned</h1>)
-//   return (
-//     <div className="flex justify-center">
-//       <div className="p-4">
-//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-//           {
-//             nfts.map((nft, i) => (
-//               <div key={i} className="border shadow rounded-xl overflow-hidden">
-//                 <img src={nft.image} className="rounded" />
-//                 <div className="p-4 bg-black">
-//                   <p className="text-2xl font-bold text-white">Price -  Eth</p>
-//                   <button className="mt-4 w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => listNFT(nft)}>List</button>
-//                 </div>
-//               </div>
-//             ))
-//           }
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
+      //TODO: jsonRpcProvider
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const fidContract = new ethers.Contract(
+        FIDcontractAddress,
+        FID.abi, 
+        signer)
+
+    const data = await fidContract.fetchProposals()
+    console.log(data)
+    const items = await Promise.all(data.map(async i => {
+      let item = {
+        proposalId: i.proposalId,
+        name: i.name,
+        description: i.description,
+        forVotes: i.forVotes.toNumber(),
+        againstVotes: i.againstVotes.toNumber(),
+        succeeded: i.succeeded
+      }
+      return item
+    }))
+    setProposals(items)
+    setLoadingState('loaded') 
+   
+  }
+
+  async function voteFor(proposal) {
+    
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    console.log(signer)
+    const fidContract = new ethers.Contract(
+        FIDcontractAddress,
+        FID.abi, 
+        signer)
+
+    const transaction = await fidContract.vote(proposal.proposalId, 1, {
+      gasLimit: 100000
+    })
+    await transaction.wait()
+  }
+
+  async function voteAgainst(proposal) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const fidContract = new ethers.Contract(
+        FIDcontractAddress,
+        FID.abi, 
+        signer)
+    const transaction = await fidContract.vote(proposal.proposalId, 0, {
+      gasLimit: 100000
+    })
+    await transaction.wait()
+  }
+
+  //const wallet = window.sessionStorage.getItem('wallet')
+  
+  if (loadingState === 'loaded' && !proposals.length) return (<h1 className="px-20 py-10 text-3xl">No proposals</h1>)
+  return (
+    <Container>
+    <div className="flex justify-center">
+      <div className="w-1/2 flex flex-col pb-12">
+      {
+            proposals.map((proposal, i) => (
+              <div key={i} className="border shadow rounded-xl overflow-hidden">
+            
+                <div className="p-4">
+                  <p className="text-2xl font-bold">Name-{proposal.name}</p>
+                  <p className="text-2xl font-bold">Desc-{proposal.description}</p>
+                  <p className="text-2xl font-bold">For-{proposal.forVotes}</p>
+                  <p className="text-2xl font-bold">Against-{proposal.againstVotes}</p>
+                  <p className="text-2xl font-bold">succeeded-{proposal.succeeded}</p>
+                  
+                  <button onClick={() => voteFor(proposal)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
+                  <button onClick={() => voteAgainst(proposal)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
+                  <button onClick={() => alert(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">alert</button>
+                  
+                </div>
+              </div>
+            ))
+          }
+      </div>
+     
+    </div>
+    </Container>
+  )
+}

@@ -7,8 +7,8 @@ import Form from "react-bootstrap/Form";
 //import Button from "react-bootstrap/Button";
 import Home from "./Home";
 import Proposals from "./Proposals";
-//import ProposalsList from "./ProposalsList";
-import Manifest from "./Manifest";
+import ProposalsList from "./ProposalsList";
+
 
 
 export default function App() {
@@ -26,8 +26,8 @@ export default function App() {
     
 
   <Navbar bg="light" expand="lg">
-      <Container fluid>
-        <Navbar.Brand href="#">Merkabah project</Navbar.Brand>
+      <Container>
+        <Navbar.Brand href="#">puredemocracy.io</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -41,12 +41,9 @@ export default function App() {
           <Nav.Link as={NavLink} to="/proposals">
           Proposals
         </Nav.Link>
-          <Nav.Link as={NavLink} to="/manifest">
-          Manifest
-        </Nav.Link>
-        {/* <Nav.Link as={NavLink} to="/proposals_list">
+        <Nav.Link as={NavLink} to="/proposals_list">
           Proposals list
-        </Nav.Link> */}
+        </Nav.Link>
 
             {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -58,14 +55,11 @@ export default function App() {
                 Something else here
               </NavDropdown.Item>
             </NavDropdown> */}
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
+
           </Nav>
           
           <Form className="d-flex">
-          <Home
-      />
+          
           
           </Form>
         </Navbar.Collapse>
@@ -75,8 +69,7 @@ export default function App() {
     <Routes>
     <Route path ="/" element={<Home />} />
     <Route path ="proposals" element={<Proposals />} />
-    <Route path ="manifest" element={<Manifest />} />
-    {/* <Route path ="proposals_list" element={<ProposalsList />} /> */}
+    <Route path ="proposals_list" element={<ProposalsList />} />
     </Routes>
   
    </Container>

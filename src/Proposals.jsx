@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Container from "react-bootstrap/Container";
 
 import {
     FIDcontractAddress
@@ -23,20 +24,44 @@ export default function Proposals() {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-
     let contract = new ethers.Contract(
         FIDcontractAddress,
         FID.abi, 
         signer)
-
     let transaction = await contract.propose(formInput.name, formInput.description)
     let transactionRes = await transaction.wait()
     console.log(transactionRes)
    
   }
 
-  return (
+  // async function checkfio() {
+  //   console.log(items)
+  // }
 
+  async function fio() {
+      const [items, setItems] = useState([]);
+      //faceio api call from backend, save face id only in backend
+      let faceio;
+      faceio = new faceIO("fioa669e");
+
+      let response = await faceio.enroll({
+          locale: "auto",
+          payload: {
+            email: "developermars1@gmail.com",
+            pin: "12345",
+          },
+        });
+
+        //console.log(` Unique Facial ID: ${response.facialId}`);
+
+        // let faceIdBytes = bytes32(response.facialId)
+        // let transaction = await this._contract.setAddressToFaceid(selectedAddress, faceIdBytes)
+        // let transactionRes= await transaction.wait()
+        // console.log(transactionRes)
+  }
+
+  return (
+    <Container>
     <Form>
     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" onChange={e => updateFormInput({ ...formInput, name: e.target.value })}>
       <Form.Label>Name</Form.Label>
@@ -49,7 +74,14 @@ export default function Proposals() {
     <Button variant="primary" onClick={listProposal}>
         Submit
       </Button>
+      <Button variant="primary" onClick={fio}>
+        Face id identify
+      </Button>
+      {/* <Button variant="primary" onClick={checkfio}>
+        check
+      </Button> */}
   </Form>
+  </Container>
     
 
   )
