@@ -1,6 +1,7 @@
 # fio_project
 
 MANIFEST
+
 We, the participants of this supranational system, announce a manifesto that will serve as the basis for the creation of a new system of governance based on the principles of equality and justice. Our manifesto consists of the following items:
 1. We take responsibility for the destruction of the categories of nationality, religion and citizenship, which are the reason for the distribution of power and resources between groups based on the principle of "divide and rule". The participants of the system will renounce these categories by renouncing citizenship, renouncing religion and nationality.
 2. Each participant will have the opportunity to put forward bills and amendments, as well as vote for them. This will allow us to create a management system that will reflect the opinions and needs of all participants.
