@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import initialSource from "../data/data";
 import Select from "../components/select2";
 
-export default function Rnd() {
+export default function ProposalsList() {
 
   // useEffect(() => {
   //   setState(initialSource.state);
