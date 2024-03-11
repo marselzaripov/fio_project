@@ -1,110 +1,121 @@
-import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
-import Container from "react-bootstrap/Container";
+import React, { useState, useEffect } from "react";
+import initialSource from "../data/data";
+import Select from "../components/select2";
 
-import {
-    FIDcontractAddress
-  } from '../config';
-  
-import FID from '../artifacts/contracts/FID.sol/FID.json';
+export default function Rnd() {
+
+  // useEffect(() => {
+  //   setState(initialSource.state);
+  // }, []);
 
 
-export default function ProposalsList() {
-  //const [fileUrl, setFileUrl] = useState(null)
-  //const [formInput, updateFormInput] = useState({ description: '' })
+  const initialSourceMap = {
+    state: 0,
+    district: 1,
+    commune: 2,
+  };
 
-  const [proposals, setProposals] = useState([])
-  const [loadingState, setLoadingState] = useState('not-loaded')
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [passportNumber, setPassportNumber] = useState(0);
+  const [state, setState] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [commune, setCommune] = useState([]);
+  const [selectedCommune, setSelectedCommune] = useState(0);
+  const [sourceMap] = useState(initialSourceMap);
+
   useEffect(() => {
-    listProposal()
-  }, [])
+    setState(initialSource.state);
+  }, []);
 
-  async function listProposal() {
 
-      //TODO: jsonRpcProvider
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    const fidContract = new ethers.Contract(
-        FIDcontractAddress,
-        FID.abi, 
-        signer)
+  const handleChange = (params) => (ev) => {
+    const target = ev.currentTarget;
+    //alert(target.getAttribute('value'));
+    const { value } = target;
+    const { current, next } = params;
+    setNewValues({ value, current, next });
+    if(current === 'commune'){setSelectedCommune(initialSource['commune'][value-1]['communeId'])};
+  };
 
-    const data = await fidContract.fetchProposals()
-    console.log(data)
-    const items = await Promise.all(data.map(async i => {
-      let item = {
-        proposalId: i.proposalId,
-        name: i.name,
-        description: i.description,
-        forVotes: i.forVotes.toNumber(),
-        againstVotes: i.againstVotes.toNumber(),
-        succeeded: i.succeeded
+  const setNewValues = ({ value, current, next }) => {
+    const data = initialSource[next];
+
+    if (data) {
+      switch (next) {
+        case "district":
+          setDistrict(data.filter((el) => el[current] === Number(value)));
+          break;
+        case "commune":
+          setCommune(data.filter((el) => el[current] === Number(value)));
+          break;
+        default:
+          break;
       }
-      return item
-    }))
-    setProposals(items)
-    setLoadingState('loaded') 
-   
-  }
+    }
 
-  async function voteFor(proposal) {
-    
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    console.log(signer)
-    const fidContract = new ethers.Contract(
-        FIDcontractAddress,
-        FID.abi, 
-        signer)
+    clearValues(next);
+  };
 
-    const transaction = await fidContract.vote(proposal.proposalId, 1, {
-      gasLimit: 100000
+  const clearValues = (next) => {
+    const nextkey = sourceMap[next];
+
+    Object.keys(sourceMap).forEach((key) => {
+      if (sourceMap[key] > nextkey) {
+        switch (key) {
+          case "state":
+            setState([]);
+            break;
+          case "district":
+            setDistrict([]);
+            break;
+          case "commune":
+            setCommune([]);
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  };
+
+
+  function handleFormSubmit(e) {
+    e.preventDefault()
+
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({
+        user_name: name, 
+        user_surname: surname, 
+        user_passport: passportNumber,
+        commune_id: selectedCommune}),
+      headers: {"Content-type": "application/json"}
+    }
+
+    fetch("https://jsonplaceholder.typicode.com/posts", requestOptions)
+    .then(response => response.json())
+    .then(datas => {
+      console.log(datas)
     })
-    await transaction.wait()
-  }
-
-  async function voteAgainst(proposal) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    const fidContract = new ethers.Contract(
-        FIDcontractAddress,
-        FID.abi, 
-        signer)
-    const transaction = await fidContract.vote(proposal.proposalId, 0, {
-      gasLimit: 100000
+    .catch(error => {
+      console.error(error)
     })
-    await transaction.wait()
   }
 
-  //const wallet = window.sessionStorage.getItem('wallet')
   
-  if (loadingState === 'loaded' && !proposals.length) return (<h1 className="px-20 py-10 text-3xl">No proposals</h1>)
-  return (
-    <Container>
-    <div className="flex justify-center">
-      <div className="w-1/2 flex flex-col pb-12">
-      {
-            proposals.map((proposal, i) => (
-              <div key={i} className="border shadow rounded-xl overflow-hidden">
-            
-                <div className="p-4">
-                  <p className="text-2xl font-bold">Name-{proposal.name}</p>
-                  <p className="text-2xl font-bold">Desc-{proposal.description}</p>
-                  <p className="text-2xl font-bold">For-{proposal.forVotes}</p>
-                  <p className="text-2xl font-bold">Against-{proposal.againstVotes}</p>
-                  <p className="text-2xl font-bold">succeeded-{proposal.succeeded}</p>
-                  
-                  <button onClick={() => voteFor(proposal)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote for</button>
-                  <button onClick={() => voteAgainst(proposal)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">vote against</button>
-                  <button onClick={() => alert(i)} className="mt-4 w-full bg-pink-500 font-bold py-2 px-12 rounded">alert</button>
-                  
-                </div>
-              </div>
-            ))
-          }
-      </div>
-     
-    </div>
-    </Container>
-  )
+
+  return <form onSubmit={handleFormSubmit}>
+
+    <input type="text" value={name} name="userName" onChange={e => setName(e.target.value)} />
+    <input type="text" value={surname} name="userSurame" onChange={e => setSurname(e.target.value)} />
+    <input type="number" value={passportNumber} name="userSurame" onChange={e => setPassportNumber(e.target.value)} />
+  
+
+    <Select data={state} action={handleChange} current="state" next="district" />
+    <Select data={district} action={handleChange} current="district" next="commune"/>
+    <Select data={commune} action={handleChange} current="commune"/>
+          
+    <input type="submit" />
+  </form>
 }
